@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useLocation, Navigate } from 'react-router-dom';
@@ -28,8 +27,9 @@ const Auth = () => {
     
     try {
       await signIn(email, password);
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: Error | unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -42,8 +42,9 @@ const Auth = () => {
     try {
       await signUp(email, password);
       toast.success('Check your email for the confirmation link');
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: Error | unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -54,7 +55,6 @@ const Auth = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-6">
           <img src="/logo.png" alt="Orion" className="h-12 mx-auto mb-2" />
-          <h1 className="text-3xl font-bold">Orion</h1>
           <p className="text-muted-foreground">Track your expenses and stay on budget</p>
         </div>
         

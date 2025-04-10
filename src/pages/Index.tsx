@@ -23,7 +23,6 @@ const Index = () => {
             <div>
               <h1 className="text-3xl font-bold flex items-center">
                 <img src="/logo.png" alt="Orion" className="h-8 mr-2" /> 
-                Orion
               </h1>
               <p className="text-muted-foreground">Track your expenses and stay on budget</p>
             </div>
