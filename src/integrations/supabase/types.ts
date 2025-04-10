@@ -9,6 +9,33 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      budgets: {
+        Row: {
+          amount: number
+          category: string
+          created_at: string | null
+          id: string
+          period: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          category: string
+          created_at?: string | null
+          id?: string
+          period: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          category?: string
+          created_at?: string | null
+          id?: string
+          period?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       instruments: {
         Row: {
           id: number
@@ -21,6 +48,27 @@ export type Database = {
         Update: {
           id?: number
           name?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          display_name: string | null
+          id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          id?: string
         }
         Relationships: []
       }
@@ -39,6 +87,36 @@ export type Database = {
           created_at?: string
           id?: number
           name?: string | null
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number
+          category: string
+          created_at: string | null
+          date: string | null
+          description: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          category: string
+          created_at?: string | null
+          date?: string | null
+          description?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          category?: string
+          created_at?: string | null
+          date?: string | null
+          description?: string | null
+          id?: string
+          user_id?: string
         }
         Relationships: []
       }

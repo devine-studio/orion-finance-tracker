@@ -13,12 +13,13 @@ import { toast } from "sonner";
 const AddExpenseForm = () => {
   const { addTransaction } = useFinance();
   const [open, setOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState<ExpenseCategory>("food");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!amount || !description || !category || !date) {
@@ -32,16 +33,24 @@ const AddExpenseForm = () => {
       return;
     }
 
-    addTransaction({
-      amount: parsedAmount,
-      description,
-      category,
-      date: new Date(date),
-    });
+    setIsSubmitting(true);
+    
+    try {
+      await addTransaction({
+        amount: parsedAmount,
+        description,
+        category,
+        date: new Date(date),
+      });
 
-    toast.success("Expense added successfully");
-    resetForm();
-    setOpen(false);
+      toast.success("Expense added successfully");
+      resetForm();
+      setOpen(false);
+    } catch (error: any) {
+      toast.error(error.message || "Failed to add expense");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const resetForm = () => {
@@ -78,6 +87,7 @@ const AddExpenseForm = () => {
               placeholder="0.00"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
+              disabled={isSubmitting}
             />
           </div>
           
@@ -88,6 +98,7 @@ const AddExpenseForm = () => {
               placeholder="Grocery shopping, Dinner, etc."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              disabled={isSubmitting}
             />
           </div>
           
@@ -96,6 +107,7 @@ const AddExpenseForm = () => {
             <Select
               value={category}
               onValueChange={(value) => setCategory(value as ExpenseCategory)}
+              disabled={isSubmitting}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select a category" />
@@ -117,14 +129,22 @@ const AddExpenseForm = () => {
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
+              disabled={isSubmitting}
             />
           </div>
           
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={() => setOpen(false)}
+              disabled={isSubmitting}
+            >
               Cancel
             </Button>
-            <Button type="submit">Add Expense</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Adding..." : "Add Expense"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

@@ -7,11 +7,14 @@ import SpendingChart from "@/components/dashboard/SpendingChart";
 import BudgetProgress from "@/components/dashboard/BudgetProgress";
 import RecentTransactions from "@/components/dashboard/RecentTransactions";
 import AddExpenseForm from "@/components/expenses/AddExpenseForm";
-import { ArrowRightIcon, HomeIcon, LineChartIcon, WalletIcon } from "lucide-react";
+import { ArrowRightIcon, LineChartIcon, LogOutIcon, UserIcon, WalletIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 const Index = () => {
+  const { signOut, user } = useAuth();
+  
   return (
     <FinanceProvider>
       <div className="min-h-screen bg-background p-4 md:p-8">
@@ -19,7 +22,8 @@ const Index = () => {
           <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div>
               <h1 className="text-3xl font-bold flex items-center">
-                <WalletIcon className="mr-2" /> Budget Tracker
+                <img src="/logo.png" alt="Orion" className="h-8 mr-2" /> 
+                Orion
               </h1>
               <p className="text-muted-foreground">Track your expenses and stay on budget</p>
             </div>
@@ -29,6 +33,9 @@ const Index = () => {
                 <Link to="/budgets" className="flex items-center gap-1">
                   <LineChartIcon className="h-4 w-4" /> View Budgets
                 </Link>
+              </Button>
+              <Button variant="outline" onClick={signOut} title="Sign Out">
+                <LogOutIcon className="h-4 w-4" />
               </Button>
             </div>
           </header>

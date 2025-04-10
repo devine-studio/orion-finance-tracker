@@ -2,9 +2,10 @@
 import { useFinance, categoryInfo } from "@/context/FinanceContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const BudgetProgress = () => {
-  const { budgets } = useFinance();
+  const { budgets, isLoading } = useFinance();
 
   // Sort budgets by percentage spent
   const sortedBudgets = [...budgets].sort((a, b) => {
@@ -12,6 +13,31 @@ const BudgetProgress = () => {
     const percentB = (b.spent / b.amount) * 100;
     return percentB - percentA;
   });
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Budget Status</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="space-y-1">
+              <div className="flex justify-between text-sm">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-4 w-28" />
+              </div>
+              <Skeleton className="h-2 w-full" />
+              <div className="flex justify-between">
+                <Skeleton className="h-3 w-8" />
+                <Skeleton className="h-3 w-16" />
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>
